@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Demo: helloworld</title>
+  <link rel="stylesheet" href="../../css/demo.css" media="screen">
+</head>
+<body>
+  <h1>Demo: helloworld</h1>
+  <div id="helloworld"></div>
+  <script src="//ajax.googleapis.com/ajax/libs/dojo/1.9.1/dojo/dojo.js" data-dojo-config="async: true"></script>
+  <script>
+  require(["dojo/dom", "dojo/domReady!"], function(dom){
+    dom.byId("helloworld").innerHTML = "Hello New World!";
+  });
+  </script>
+</body>
+</html>

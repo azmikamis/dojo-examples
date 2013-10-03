@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Demo: Deferred.when</title>
+  <link rel="stylesheet" href="../../css/demo.css" media="screen">
+  <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.9.1/dijit/themes/claro/claro.css" media="screen">
+</head>
+<body class="claro">
+  <h1>Demo: Deferred.when</h1>
+  
+  <ul id="userlist1"></ul>
+  <ul id="userlist2"></ul>
+
+  <script src="//ajax.googleapis.com/ajax/libs/dojo/1.9.1/dojo/dojo.js" data-dojo-config="async: true"></script>
+  <script>
+  require(["dojo/_base/array", "dojo/when", "dojo/request", "dojo/dom", "dojo/dom-construct", "dojo/json", "dojo/domReady"],
+    function(arrayUtil, when, request, dom, domConstruct, JSON, domReady) {
+ 
+      var getUserList = (function(){
+        var users;
+        return function(){
+          if(!users){
+            return request.get("../../data/users-mangled.json", {
+              handleAs: "json"
+            }).then(function(response){
+              // Save the resulting array into the users variable
+              return arrayUtil.map(response, function(user){
+                return {
+                  id: user[0],
+                  username: user[1],
+                  name: user[2]
+                };
+              });
+
+              // Make sure to return users here,
+              // for valid chaining
+              return users;
+            });
+          }
+          return users;
+        };
+      })();
+ 
+      domReady(function(){
+        when(getUserList(), function(users){
+          // This callback will be run after the request completes
+ 
+          var userlist = dom.byId("userlist1");
+          arrayUtil.forEach(users, function(user){
+            domConstruct.create("li", {
+              innerHTML: JSON.stringify(user)
+            }, userlist);
+          });
+ 
+          when(getUserList(), function(user){
+            // This callback will run right away since it's already in cache
+ 
+            var userlist = dom.byId("userlist2");
+              arrayUtil.forEach(users, function(user){
+                domConstruct.create("li", {
+                  innerHTML: JSON.stringify(user)
+                }, userlist);
+              });
+            });
+          });
+        });
+    });
+</script>
+</body>
+</html>

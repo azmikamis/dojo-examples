@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Demo: button</title>
+  <link rel="stylesheet" href="../../css/demo.css" media="screen">
+  <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.9.1/dijit/themes/claro/claro.css" media="screen">
+</head>
+<body class="claro">
+  <h1>Demo: button</h1>
+  <div>
+    <button id="button1" type="button">Button1</button>
+    <button id="button2" data-dojo-type="dijit/form/Button" type="button">Button2</button>
+    <button id="button3" data-dojo-type="dijit/form/Button" type="button">
+      <div>Button4</div>
+      <script type="dojo/on" data-dojo-event="click">
+        console.log("I was clicked");
+      </script>
+    </button>
+  </div>
+  <script src="//ajax.googleapis.com/ajax/libs/dojo/1.9.1/dojo/dojo.js" data-dojo-config="async: true"></script>
+  <script>
+  require(["dojo/dom", "dojo/on", "dojo/parser", "dojo/ready", "dijit/registry", "dijit/form/Button"],
+  function(dom, on, parser, ready, registry){
+    var myClick = function(evt){
+      console.log("I was clicked");
+    };
+ 
+    ready(function(){
+      parser.parse();
+ 
+      on(dom.byId("button1"), "click", myClick);
+      on(registry.byId("button2"), "click", myClick);
+    });
+  });
+</script>
+</body>
+</html>

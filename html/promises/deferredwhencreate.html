@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Demo: dojo/when for creation</title>
+  <link rel="stylesheet" href="../../css/demo.css" media="screen">
+  <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.9.1/dijit/themes/claro/claro.css" media="screen">
+</head>
+<body class="claro">
+  <h1>Demo: dojo/when for creation</h1>
+  
+  <h2>List 1 (from server)</h2>
+  <ul id="userlist1"></ul>
+
+  <h2>List 2 (from static array)</h2>
+  <ul id="userlist2"></ul>
+
+  <script src="//ajax.googleapis.com/ajax/libs/dojo/1.9.1/dojo/dojo.js" data-dojo-config="async: true"></script>
+  <script>
+  require(["dojo/_base/array", "dojo/when", "dojo/request", "dojo/dom", "dojo/dom-construct", "dojo/json", "dojo/domReady"],
+    function(arrayUtil, when, request, dom, domConstruct, JSON, domReady) {
+ 
+      function createUserList(node, users){
+        var nodeRef = dom.byId(node);
+
+        return when(
+          users,
+          function(users){
+            arrayUtil.forEach(users, function(user){
+              domConstruct.create("li", {
+                innerHTML: JSON.stringify(user)
+              }, nodeRef);
+            });
+          },
+          function(error){
+            domConstruct.create("li", {
+              innerHTML: "Error: " + error
+            }, nodeRef);
+          }
+        );
+      }
+ 
+      domReady(function(){
+        var users = request.get("../../data/users-mangled.json", {
+            handleAs: "json"
+          }).then(function(response){
+            return arrayUtil.map(response, function(user){
+              return {
+                id: user[0],
+                username: user[1],
+                name: user[2]
+              };
+            });
+          });
+
+          createUserList("userlist1", users);
+          createUserList("userlist2",
+            [{ id: 100, username: "username100", name: "User 100" }]);
+      });
+    });
+</script>
+</body>
+</html>
