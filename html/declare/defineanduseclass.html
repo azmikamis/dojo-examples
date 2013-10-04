@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Demo: Define and Use Class</title>
+  <link rel="stylesheet" href="../../css/demo.css" media="screen">
+  <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.9.1/dijit/themes/claro/claro.css" media="screen">
+</head>
+<body class="claro">
+  <h1>Demo: Define and Use Class</h1>
+  
+  <script>
+    dojoConfig = {
+      async: true,
+      packages:[{
+        name:"js", location:"/dojo-examples/js"
+      }]
+    };
+  </script>
+  <script src="//ajax.googleapis.com/ajax/libs/dojo/1.9.1/dojo/dojo.js"></script>
+  <script>
+  require(["js/Person", "js/PersonWithMixin"], function(Person, PersonWithMixin){
+    var folk = new Person("phiggins", 42, "Tennessee");
+    console.log(folk.name, folk.age, folk.residence);
+    
+    var anon  = new PersonWithMixin(),
+        alice = new PersonWithMixin({ name: "Alice", age: 42, residence: "Universe 1" });
+    console.log(anon.name, alice.name); // "Anonymous", "Alice"
+    console.log(anon.residence, alice.residence); // "Universe A", "Universe 1"
+    alice.moveTo("Universe 420");
+    console.log(alice.residence); // "Universe 420"
+  });
+</script>
+</body>
+</html>

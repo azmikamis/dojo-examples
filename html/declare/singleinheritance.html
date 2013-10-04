@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Demo: Single Inheritance</title>
+  <link rel="stylesheet" href="../../css/demo.css" media="screen">
+  <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.9.1/dijit/themes/claro/claro.css" media="screen">
+</head>
+<body class="claro">
+  <h1>Demo: Single Inheritance</h1>
+  
+  <script>
+    dojoConfig = {
+      async: true,
+      packages:[{
+        name:"js", location:"/dojo-examples/js"
+      }]
+    };
+  </script>
+  <script src="//ajax.googleapis.com/ajax/libs/dojo/1.9.1/dojo/dojo.js"></script>
+  <script>
+  require(["js/Employee", "js/Boss", "js/BossInherited"], function(Employee, Boss, BossInherited){
+    var kathryn = new Boss("Kathryn", 26, "Minnesota", 9000),
+        klark   = new BossInherited("Klark", 26, "Minnesota", 9000),
+        matt    = new Employee("Matt", 33, "California", 1000);
+
+    console.log(kathryn.askForRaise(), matt.askForRaise()); // 2250, 20
+    console.log(klark.askForRaise(), matt.askForRaise()); // 3600, 20
+  });
+</script>
+</body>
+</html>
